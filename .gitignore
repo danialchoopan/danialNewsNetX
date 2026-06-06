@@ -1,0 +1,12 @@
+bin/
+obj/
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+.idea/
+.vscode/
+out/
+dist/
+node_modules/
+.env

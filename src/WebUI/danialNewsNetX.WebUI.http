@@ -1,0 +1,6 @@
+@danialNewsNetX.WebUI_HostAddress = http://localhost:5037
+
+GET {{danialNewsNetX.WebUI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
