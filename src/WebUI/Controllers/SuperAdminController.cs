@@ -23,6 +23,28 @@ public class SuperAdminController : Controller
         return View(telemetry);
     }
 
+    [HttpGet("users")]
+    public async Task<IActionResult> Users()
+    {
+        // Simple implementation to show list of users for moderation
+        var users = await _mediator.Send(new GetUsersQuery());
+        return View(users);
+    }
+
+    [HttpPost("verify/{userId}")]
+    public async Task<IActionResult> ToggleVerification(string userId)
+    {
+        await _mediator.Send(new ToggleUserVerificationCommand(userId));
+        return RedirectToAction(nameof(Users));
+    }
+
+    [HttpPost("ban/{userId}")]
+    public async Task<IActionResult> BanUser(string userId)
+    {
+        await _mediator.Send(new BanUserCommand(userId, 30)); // Default 30 days
+        return RedirectToAction(nameof(Users));
+    }
+
     [HttpPost("announcement")]
     public async Task<IActionResult> SendAnnouncement(string message)
     {

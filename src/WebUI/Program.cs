@@ -15,8 +15,12 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSignalR()
-    .AddStackExchangeRedis(builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379");
+var redisConnection = builder.Configuration.GetConnectionString("Redis");
+var signalrBuilder = builder.Services.AddSignalR();
+if (!string.IsNullOrEmpty(redisConnection))
+{
+    signalrBuilder.AddStackExchangeRedis(redisConnection);
+}
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
