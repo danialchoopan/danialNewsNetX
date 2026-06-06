@@ -46,6 +46,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+app.MapHub<danialNewsNetX.WebUI.Hubs.AdminHub>("/adminHub");
 
 // Automatic migrations
 using (var scope = app.Services.CreateScope())
@@ -60,7 +61,8 @@ using (var scope = app.Services.CreateScope())
         }
 
         var userManager = services.GetRequiredService<UserManager<AppUser>>();
-        await danialNewsNetX.Infrastructure.Persistence.Seed.DatabaseSeeder.SeedAsync(context, userManager);
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await danialNewsNetX.Infrastructure.Persistence.Seed.DatabaseSeeder.SeedAsync(context, userManager, roleManager);
     }
     catch (Exception ex)
     {

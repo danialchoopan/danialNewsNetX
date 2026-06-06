@@ -19,6 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>, IApplicationDbCo
     public DbSet<Hashtag> Hashtags => Set<Hashtag>();
     public DbSet<PostHashtag> PostHashtags => Set<PostHashtag>();
     public DbSet<Mention> Mentions => Set<Mention>();
+    public DbSet<SystemFeature> SystemFeatures => Set<SystemFeature>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
