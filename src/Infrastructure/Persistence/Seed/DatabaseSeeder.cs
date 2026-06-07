@@ -106,5 +106,22 @@ public static class DatabaseSeeder
         }
 
         await context.SaveChangesAsync();
+
+        // Seed Reports
+        if (!await context.Reports.AnyAsync())
+        {
+            var firstPost = await context.Posts.FirstAsync();
+            var firstUser = await context.Users.FirstAsync();
+            context.Reports.Add(new Report
+            {
+                Id = Guid.NewGuid(),
+                ReporterUserId = firstUser.Id,
+                TargetPostId = firstPost.Id,
+                Reason = "محتوای اسپم",
+                Status = ReportStatus.Pending,
+                CreatedAt = DateTime.UtcNow
+            });
+            await context.SaveChangesAsync();
+        }
     }
 }

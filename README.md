@@ -79,7 +79,7 @@ The system is initialized with sample data and various roles.
 Here is a preview of the platform's user interface:
 
 ### Super Admin Dashboard
-![Super Admin Panel](docs/images/admin_dashboard_en.png)
+![Super Admin Panel](docs/images/admin_dashboard_fa.png)
 
 ### Home Page
-![Home Page](docs/images/home_en.png)
+![Home Page](docs/images/home_fa.png)

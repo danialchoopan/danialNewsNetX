@@ -41,6 +41,7 @@ public static class DependencyInjection
         }
 
         services.AddHostedService<StoryArchiverService>();
+        services.AddHostedService<EngagementCalculatorService>();
 
         return services;
     }

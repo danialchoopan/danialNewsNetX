@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace danialNewsNetX.WebUI.Controllers;
 
-public class SendAnnouncementCommandHandler : IRequestHandler<SendAnnouncementCommand>
+public class SendAnnouncementCommandHandler : IRequestHandler<SendAnnouncementCommand, Unit>
 {
     private readonly IHubContext<AdminHub> _hubContext;
 
@@ -13,8 +13,9 @@ public class SendAnnouncementCommandHandler : IRequestHandler<SendAnnouncementCo
         _hubContext = hubContext;
     }
 
-    public async Task Handle(SendAnnouncementCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(SendAnnouncementCommand request, CancellationToken cancellationToken)
     {
         await _hubContext.Clients.All.SendAsync("ReceiveAnnouncement", request.Message, cancellationToken);
+        return Unit.Value;
     }
 }

@@ -4,10 +4,80 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>پنل مدیریت عالی - danialNewsNetX</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/tailwind.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'ui-sans-serif', 'system-ui'],
+                    },
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Vazirmatn', sans-serif; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Vazirmatn', 'Tahoma', sans-serif; direction: rtl; margin: 0; background-color: #0f172a !important; color: #f1f5f9; min-height: 100vh; }
+        .bg-slate-900 { background-color: #0f172a !important; }
+        .bg-slate-800 { background-color: #1e293b !important; }
+        .bg-slate-700 { background-color: #334155 !important; }
+        .text-slate-100 { color: #f1f5f9 !important; }
+        .text-slate-300 { color: #cbd5e1 !important; }
+        .text-slate-400 { color: #94a3b8 !important; }
+        .text-slate-500 { color: #64748b !important; }
+        .text-indigo-400 { color: #818cf8 !important; }
+        .text-white { color: #ffffff !important; }
+        .border-slate-700 { border-color: #334155 !important; }
+        .flex { display: flex !important; }
+        .flex-col { flex-direction: column !important; }
+        .min-h-screen { min-height: 100vh !important; }
+        .w-64 { width: 16rem !important; }
+        .flex-1 { flex: 1 1 0% !important; }
+        .p-6 { padding: 1.5rem !important; }
+        .p-8 { padding: 2rem !important; }
+        .p-4 { padding: 1rem !important; }
+        .px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+        .py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+        .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem !important; }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem !important; }
+        .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 2rem !important; }
+        .rounded-lg { border-radius: 0.5rem !important; }
+        .rounded-xl { border-radius: 0.75rem !important; }
+        .rounded-2xl { border-radius: 1rem !important; }
+        .font-bold { font-weight: 700 !important; }
+        .text-sm { font-size: 0.875rem !important; }
+        .text-xs { font-size: 0.75rem !important; }
+        .text-2xl { font-size: 1.5rem !important; line-height: 2rem !important; }
+        .text-3xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
+        .grid { display: grid !important; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+        .gap-4 { gap: 1rem !important; }
+        .gap-6 { gap: 1.5rem !important; }
+        .gap-8 { gap: 2rem !important; }
+        .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)) !important; }
+        .from-indigo-600 { --tw-gradient-from: #4f46e5; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(79, 70, 229, 0)) !important; }
+        .to-indigo-700 { --tw-gradient-to: #4338ca !important; }
+        .from-emerald-600 { --tw-gradient-from: #059669; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(5, 150, 105, 0)) !important; }
+        .to-emerald-700 { --tw-gradient-to: #047857 !important; }
+        .from-amber-600 { --tw-gradient-from: #d97706; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 119, 6, 0)) !important; }
+        .to-amber-700 { --tw-gradient-to: #b45309 !important; }
+        .from-rose-600 { --tw-gradient-from: #e11d48; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(225, 29, 72, 0)) !important; }
+        .to-rose-700 { --tw-gradient-to: #be123c !important; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important; }
+        .items-center { align-items: center !important; }
+        .justify-between { justify-content: space-between !important; }
+        .w-5 { width: 1.25rem !important; }
+        .h-5 { height: 1.25rem !important; }
+        .me-3 { margin-inline-end: 0.75rem !important; }
+        .w-full { width: 100% !important; }
+        .mt-2 { margin-top: 0.5rem !important; }
+        .mt-1 { margin-top: 0.25rem !important; }
+        .mb-4 { margin-bottom: 1rem !important; }
+        .transition-colors { transition-property: background-color, border-color, color, fill, stroke !important; transition-duration: 150ms !important; }
+        aside { border-left: 1px solid #334155; }
+        @@media (min-width: 1024px) { .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; } .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100">
@@ -26,7 +96,7 @@
                     <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                     مدیریت کاربران
                 </a>
-                <a href="#" class="flex items-center px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-lg transition-colors">
+                <a href="/admin/super/moderation" class="flex items-center px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-lg transition-colors">
                     <svg class="w-5 h-5 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                     صف انتظار نظارت
                 </a>

@@ -36,15 +36,38 @@
         </div>
     </div>
 
-    <!-- Announcement Form -->
-    <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
-        <h3 class="text-xl font-bold text-white mb-4">اعلان جهانی سیستم</h3>
-        <form asp-action="SendAnnouncement" method="post" class="flex gap-4">
-            <input type="text" name="message" placeholder="متن اعلان را اینجا وارد کنید..."
-                   class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
-            <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold transition-colors">
-                ارسال به همه
-            </button>
-        </form>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Announcement Form -->
+        <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
+            <h3 class="text-xl font-bold text-white mb-4">اعلان جهانی سیستم</h3>
+            <form asp-action="SendAnnouncement" method="post" class="space-y-4">
+                <input type="text" name="message" placeholder="متن اعلان را اینجا وارد کنید..."
+                       class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold transition-colors">
+                    ارسال به همه کاربران
+                </button>
+            </form>
+        </div>
+
+        <!-- Quick Actions / Toggles -->
+        <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
+            <h3 class="text-xl font-bold text-white mb-4">تنظیمات سریع</h3>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 bg-slate-900 rounded-xl">
+                    <div>
+                        <div class="font-bold text-white">حالت تعمیر و نگهداری</div>
+                        <div class="text-xs text-slate-500">قطع دسترسی عمومی به سایت</div>
+                    </div>
+                    <button class="bg-slate-700 text-white px-4 py-2 rounded-lg text-sm">فعال سازی</button>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-slate-900 rounded-xl">
+                    <div>
+                        <div class="font-bold text-white">ثبت نام کاربران جدید</div>
+                        <div class="text-xs text-slate-500">اجازه ایجاد حساب کاربری جدید</div>
+                    </div>
+                    <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm">فعال است</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

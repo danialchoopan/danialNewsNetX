@@ -47,6 +47,27 @@ public class ToggleUserVerificationCommandHandler : IRequestHandler<ToggleUserVe
     }
 }
 
+public record MuteUserCommand(string UserId, bool Mute) : IRequest;
+
+public class MuteUserCommandHandler : IRequestHandler<MuteUserCommand>
+{
+    private readonly UserManager<AppUser> _userManager;
+
+    public MuteUserCommandHandler(UserManager<AppUser> userManager)
+    {
+        _userManager = userManager;
+    }
+
+    public async Task Handle(MuteUserCommand request, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByIdAsync(request.UserId);
+        if (user == null) return;
+
+        user.IsMuted = request.Mute;
+        await _userManager.UpdateAsync(user);
+    }
+}
+
 public record BanUserCommand(string UserId, int? Days = null) : IRequest;
 
 public class BanUserCommandHandler : IRequestHandler<BanUserCommand>

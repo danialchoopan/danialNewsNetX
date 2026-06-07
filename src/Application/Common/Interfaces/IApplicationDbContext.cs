@@ -14,6 +14,7 @@ public interface IApplicationDbContext
     DbSet<PostHashtag> PostHashtags { get; }
     DbSet<Mention> Mentions { get; }
     DbSet<SystemFeature> SystemFeatures { get; }
+    DbSet<Report> Reports { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
