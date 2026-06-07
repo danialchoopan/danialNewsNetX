@@ -22,4 +22,9 @@ public class Post
     public Guid? OriginalPostId { get; set; }
     public virtual Post? OriginalPost { get; set; }
     public bool IsRepost { get; set; }
+
+    // Denormalized counts for high-performance feed generation
+    public int LikeCount { get; set; }
+    public int ReplyCount { get; set; }
+    public double EngagementScore { get; set; }
 }

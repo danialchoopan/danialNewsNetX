@@ -7,9 +7,36 @@ namespace danialNewsNetX.Infrastructure.Persistence.Seed;
 
 public static class DatabaseSeeder
 {
-    public static async Task SeedAsync(ApplicationDbContext context, UserManager<AppUser> userManager)
+    public static async Task SeedAsync(ApplicationDbContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
     {
-        if (await context.Users.AnyAsync()) return;
+        // Seed Roles
+        string[] roleNames = { "SuperAdmin", "Admin", "Moderator", "User" };
+        foreach (var roleName in roleNames)
+        {
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
+        }
+
+        // Seed Super Admin
+        if (await userManager.FindByEmailAsync("superadmin@danialnet.com") == null)
+        {
+            var superAdmin = new AppUser
+            {
+                UserName = "superadmin",
+                Email = "superadmin@danialnet.com",
+                EmailConfirmed = true,
+                IsVerified = true
+            };
+            var result = await userManager.CreateAsync(superAdmin, "SuperAdmin@123456");
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(superAdmin, "SuperAdmin");
+            }
+        }
+
+        if (await context.Posts.AnyAsync()) return;
 
         var users = new List<AppUser>();
         var faker = new Faker("fa");
@@ -67,6 +94,34 @@ public static class DatabaseSeeder
             }
         }
 
+        // Seed System Features
+        if (!await context.SystemFeatures.AnyAsync())
+        {
+            context.SystemFeatures.AddRange(new List<SystemFeature>
+            {
+                new SystemFeature { Id = Guid.NewGuid(), Key = "StoryUploadsEnabled", IsEnabled = true, Description = "Toggle story uploads globally" },
+                new SystemFeature { Id = Guid.NewGuid(), Key = "MaintenanceMode", IsEnabled = false, Description = "Enable system-wide maintenance mode" },
+                new SystemFeature { Id = Guid.NewGuid(), Key = "NewRegistrationsEnabled", IsEnabled = true, Description = "Toggle new user registrations" }
+            });
+        }
+
         await context.SaveChangesAsync();
+
+        // Seed Reports
+        if (!await context.Reports.AnyAsync())
+        {
+            var firstPost = await context.Posts.FirstAsync();
+            var firstUser = await context.Users.FirstAsync();
+            context.Reports.Add(new Report
+            {
+                Id = Guid.NewGuid(),
+                ReporterUserId = firstUser.Id,
+                TargetPostId = firstPost.Id,
+                Reason = "محتوای اسپم",
+                Status = ReportStatus.Pending,
+                CreatedAt = DateTime.UtcNow
+            });
+            await context.SaveChangesAsync();
+        }
     }
 }

@@ -13,6 +13,8 @@ public interface IApplicationDbContext
     DbSet<Hashtag> Hashtags { get; }
     DbSet<PostHashtag> PostHashtags { get; }
     DbSet<Mention> Mentions { get; }
+    DbSet<SystemFeature> SystemFeatures { get; }
+    DbSet<Report> Reports { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -19,6 +19,8 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>, IApplicationDbCo
     public DbSet<Hashtag> Hashtags => Set<Hashtag>();
     public DbSet<PostHashtag> PostHashtags => Set<PostHashtag>();
     public DbSet<Mention> Mentions => Set<Mention>();
+    public DbSet<SystemFeature> SystemFeatures => Set<SystemFeature>();
+    public DbSet<Report> Reports => Set<Report>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -44,6 +46,10 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>, IApplicationDbCo
             entity.HasIndex(p => p.CreatedAt);
             entity.HasIndex(p => p.AuthorId);
             entity.HasIndex(p => new { p.AuthorId, p.CreatedAt }).IsDescending(false, true);
+
+            // Optimization for Trending Feed
+            entity.HasIndex(p => new { p.EngagementScore, p.CreatedAt }).IsDescending(true, true);
+            entity.HasIndex(p => new { p.LikeCount, p.CreatedAt }).IsDescending(true, true);
 
             entity.HasOne(p => p.Author)
                 .WithMany(u => u.Posts)

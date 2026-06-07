@@ -57,6 +57,15 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Guid>
 
         _context.Posts.Add(entity);
 
+        if (request.ParentPostId.HasValue)
+        {
+            var parent = await _context.Posts.FirstOrDefaultAsync(p => p.Id == request.ParentPostId.Value, cancellationToken);
+            if (parent != null)
+            {
+                parent.ReplyCount++;
+            }
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return entity.Id;

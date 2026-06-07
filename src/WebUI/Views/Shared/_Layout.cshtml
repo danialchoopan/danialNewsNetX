@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - danialNewsNetX</title>
+    <script src="/tailwind.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        'brand-primary': '#4f46e5',
+                        'brand-secondary': '#10b981',
+                        'brand-accent': '#f59e0b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Vazirmatn', 'Tahoma', 'Arial', sans-serif; direction: rtl; margin: 0; background-color: #f8fafc; color: #0f172a; line-height: 1.5; }
+        .bg-indigo-600 { background-color: #4f46e5 !important; }
+        .bg-indigo-500 { background-color: #6366f1 !important; }
+        .text-white { color: #ffffff !important; }
+        .text-indigo-600 { color: #4f46e5 !important; }
+        .border-indigo-600 { border-color: #4f46e5 !important; }
+        .text-slate-900 { color: #0f172a !important; }
+        .text-slate-600 { color: #475569 !important; }
+        .text-slate-500 { color: #64748b !important; }
+        .bg-slate-50 { background-color: #f8fafc !important; }
+        .bg-white { background-color: #ffffff !important; }
+        .border-slate-200 { border-color: #e2e8f0 !important; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-5xl { font-size: 3rem; line-height: 1; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .font-extrabold { font-weight: 800; }
+        .font-bold { font-weight: 700; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .px-8 { padding-left: 2rem; padding-right: 2rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .flex { display: flex !important; }
+        .justify-center { justify-content: center !important; }
+        .justify-between { justify-content: space-between !important; }
+        .items-center { align-items: center !important; }
+        .gap-4 { gap: 1rem !important; }
+        .text-center { text-align: center !important; }
+        .container { width: 100%; max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .border-b { border-bottom: 1px solid #e2e8f0; }
+        .border-t { border-top: 1px solid #e2e8f0; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .sticky { position: sticky; top: 0; }
+        .z-50 { z-index: 50; }
+        .hidden { display: none; }
+        .bg-amber-500 { background-color: #f59e0b; }
+        a { text-decoration: none; color: inherit; transition: color 0.2s; cursor: pointer; }
+        a:hover { color: #4f46e5; }
+        header { background-color: white; border-bottom: 1px solid #e2e8f0; }
+        nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; }
+        footer { border-top: 1px solid #e2e8f0; background-color: white; padding: 2rem 0; margin-top: 4rem; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <div id="announcement-banner" class="hidden bg-amber-500 text-white py-2 px-4 text-center font-bold sticky top-0 z-50 transition-all">
+        <span id="announcement-text"></span>
+    </div>
+
+    <header class="bg-white border-b border-slate-200">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a class="text-2xl font-bold text-indigo-600" asp-area="" asp-controller="Home" asp-action="Index">danialNewsNetX</a>
+            <div class="flex gap-4">
+                <a class="text-slate-600 hover:text-indigo-600" asp-controller="Home" asp-action="Index">خانه</a>
+                @if (User.IsInRole("SuperAdmin"))
+                {
+                    <a class="text-indigo-600 font-bold" asp-controller="SuperAdmin" asp-action="Index">پنل مدیریت</a>
+                }
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container mx-auto px-4 py-8">
+        @RenderBody()
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white py-8">
+        <div class="container mx-auto px-4 text-center text-slate-500">
+            &copy; 2026 - danialNewsNetX
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/adminHub")
+            .build();
+
+        connection.on("ReceiveAnnouncement", function (message) {
+            const banner = document.getElementById("announcement-banner");
+            const text = document.getElementById("announcement-text");
+            text.innerText = message;
+            banner.classList.remove("hidden");
+        });
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

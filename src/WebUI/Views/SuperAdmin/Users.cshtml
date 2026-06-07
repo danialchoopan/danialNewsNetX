@@ -1,0 +1,88 @@
+@model IEnumerable<danialNewsNetX.Domain.Entities.AppUser>
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="space-y-8">
+    <header>
+        <h2 class="text-3xl font-bold text-white">مدیریت کاربران</h2>
+        <p class="text-slate-400">کنترل نقش‌ها، وضعیت تایید و دسترسی کاربران</p>
+    </header>
+
+    <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-right">
+                <thead class="bg-slate-700/50">
+                    <tr>
+                        <th class="px-6 py-4 text-slate-300 font-medium">کاربر</th>
+                        <th class="px-6 py-4 text-slate-300 font-medium">وضعیت</th>
+                        <th class="px-6 py-4 text-slate-300 font-medium">نقش</th>
+                        <th class="px-6 py-4 text-slate-300 font-medium">عملیات</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-700">
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center font-bold text-indigo-400">
+                                        @user.UserName?[0]
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-slate-200">@user.UserName</div>
+                                        <div class="text-xs text-slate-500">@user.Email</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex flex-wrap gap-1">
+                                    @if (user.IsVerified)
+                                    {
+                                        <span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded-lg text-[10px] font-bold border border-blue-500/20">تایید شده</span>
+                                    }
+                                    @if (user.IsMuted)
+                                    {
+                                        <span class="bg-amber-500/10 text-amber-400 px-2 py-1 rounded-lg text-[10px] font-bold border border-amber-500/20">بی‌صدا</span>
+                                    }
+                                    @if (user.LockoutEnd > DateTimeOffset.UtcNow)
+                                    {
+                                        <span class="bg-rose-500/10 text-rose-400 px-2 py-1 rounded-lg text-[10px] font-bold border border-rose-500/20">مسدود</span>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <form asp-action="UpdateRole" asp-route-userId="@user.Id" method="post" class="flex items-center gap-2">
+                                    <select name="role" onchange="this.form.submit()" class="bg-slate-900 border border-slate-700 rounded-lg text-xs p-1 text-slate-300">
+                                        <option value="User" selected="@(true)">کاربر</option>
+                                        <option value="Moderator">ناظر</option>
+                                        <option value="SuperAdmin">مدیر عالی</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex gap-2">
+                                    <form asp-action="ToggleVerification" asp-route-userId="@user.Id" method="post" title="تغییر وضعیت تایید">
+                                        <button type="submit" class="p-2 bg-slate-700 hover:bg-indigo-600/50 rounded-lg transition-colors text-slate-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                        </button>
+                                    </form>
+                                    <form asp-action="ToggleMute" asp-route-userId="@user.Id" asp-route-mute="@(!user.IsMuted)" method="post" title="@(user.IsMuted ? "لغو بی‌صدا" : "بی‌صدا کردن")">
+                                        <button type="submit" class="p-2 bg-slate-700 hover:bg-amber-600/50 rounded-lg transition-colors text-slate-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 5-7 7 7 7"/><path d="M22 9v6"/><path d="M22 9 17 5"/><path d="M22 15 17 19"/></svg>
+                                        </button>
+                                    </form>
+                                    <form asp-action="BanUser" asp-route-userId="@user.Id" method="post" title="مسدود سازی">
+                                        <button type="submit" class="p-2 bg-slate-700 hover:bg-rose-600/50 rounded-lg transition-colors text-slate-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

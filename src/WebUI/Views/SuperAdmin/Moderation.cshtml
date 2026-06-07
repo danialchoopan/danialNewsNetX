@@ -1,0 +1,70 @@
+@model IEnumerable<danialNewsNetX.Domain.Entities.Report>
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="space-y-8">
+    <header>
+        <h2 class="text-3xl font-bold text-white">صف انتظار نظارت</h2>
+        <p class="text-slate-400">بررسی گزارش‌های کاربران و مدیریت محتوای نامناسب</p>
+    </header>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="bg-slate-800 rounded-2xl p-12 text-center border border-slate-700">
+            <div class="text-slate-500 mb-2 italic">هیچ گزارش معلقی وجود ندارد</div>
+            <p class="text-slate-400 text-sm">وضعیت سیستم در حال حاضر پاک است.</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid gap-6">
+            @foreach (var report in Model)
+            {
+                <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden">
+                    <div class="p-6 flex flex-col md:flex-row justify-between gap-6">
+                        <div class="space-y-4 flex-1">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-rose-600/20 text-rose-400 px-3 py-1 rounded-full text-xs font-bold">گزارش: @report.Reason</span>
+                                <span class="text-slate-500 text-xs">@report.CreatedAt.ToString("yyyy/MM/dd HH:mm")</span>
+                            </div>
+
+                            @if (report.TargetPost != null && report.TargetPost.Author != null)
+                            {
+                                <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <div class="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-[10px] text-white">
+                                            @(report.TargetPost.Author.UserName?[0].ToString() ?? "?")
+                                        </div>
+                                        <span class="text-sm font-bold text-slate-300">@report.TargetPost.Author.UserName</span>
+                                    </div>
+                                    <p class="text-slate-300">@report.TargetPost.Content</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50 text-slate-500 italic text-sm">
+                                    محتوا یا نویسنده در دسترس نیست
+                                </div>
+                            }
+
+                            <div class="text-xs text-slate-500 flex items-center gap-2">
+                                <span>گزارش شده توسط:</span>
+                                <span class="text-slate-400">@(report.Reporter?.UserName ?? "نامشخص")</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row md:flex-col gap-2 justify-end">
+                            <form asp-action="ResolveReport" asp-route-reportId="@report.Id" asp-route-hardDelete="true" method="post">
+                                <button type="submit" class="w-full text-sm bg-rose-600 hover:bg-rose-500 text-white px-6 py-2 rounded-xl font-bold transition-colors">حذف محتوا</button>
+                            </form>
+                            <form asp-action="ResolveReport" asp-route-reportId="@report.Id" asp-route-hardDelete="false" method="post">
+                                <button type="submit" class="w-full text-sm bg-slate-700 hover:bg-slate-600 text-slate-300 px-6 py-2 rounded-xl font-bold transition-colors">رد گزارش</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

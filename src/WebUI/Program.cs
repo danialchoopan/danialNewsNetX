@@ -15,8 +15,12 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSignalR()
-    .AddStackExchangeRedis(builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379");
+var redisConnection = builder.Configuration.GetConnectionString("Redis");
+var signalrBuilder = builder.Services.AddSignalR();
+if (!string.IsNullOrEmpty(redisConnection))
+{
+    signalrBuilder.AddStackExchangeRedis(redisConnection);
+}
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -46,6 +50,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+app.MapHub<danialNewsNetX.WebUI.Hubs.AdminHub>("/adminHub");
 
 // Automatic migrations
 using (var scope = app.Services.CreateScope())
@@ -60,7 +65,8 @@ using (var scope = app.Services.CreateScope())
         }
 
         var userManager = services.GetRequiredService<UserManager<AppUser>>();
-        await danialNewsNetX.Infrastructure.Persistence.Seed.DatabaseSeeder.SeedAsync(context, userManager);
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await danialNewsNetX.Infrastructure.Persistence.Seed.DatabaseSeeder.SeedAsync(context, userManager, roleManager);
     }
     catch (Exception ex)
     {
