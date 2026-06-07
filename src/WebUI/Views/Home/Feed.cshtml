@@ -1,0 +1,71 @@
+@model danialNewsNetX.Application.Feeds.Queries.ExploreFeedResponse
+@{
+    ViewData["Title"] = "فید خبری";
+}
+
+<div class="bg-slate-50 min-h-screen">
+    <div class="container mx-auto px-6 py-12 max-w-4xl">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar -->
+            <aside class="hidden md:block w-64 space-y-6">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200">
+                    <h4 class="font-bold text-slate-900 mb-4">برای شما</h4>
+                    <nav class="space-y-4">
+                        <a href="#" class="flex items-center gap-3 text-indigo-600 font-bold">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            خانه
+                        </a>
+                        <a href="#" class="flex items-center gap-3 text-slate-500 hover:text-indigo-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            جستجو
+                        </a>
+                        <a href="#" class="flex items-center gap-3 text-slate-500 hover:text-indigo-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                            اعلان‌ها
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Feed -->
+            <main class="flex-1 space-y-6">
+                <div class="bg-indigo-600 p-8 rounded-3xl shadow-xl shadow-indigo-600/20 text-white mb-8">
+                    <h2 class="text-2xl font-bold mb-2">فید داغ و تازه‌ترین‌ها</h2>
+                    <p class="text-indigo-100 opacity-80">اخبار و گفتگوهایی که همین حالا در جریان هستند.</p>
+                </div>
+
+                <div class="space-y-4">
+                    @foreach (var post in Model.Posts)
+                    {
+                        <div class="bg-white p-6 rounded-3xl border border-slate-200 hover:border-indigo-200 transition-all shadow-sm">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center font-bold text-indigo-600 shrink-0">
+                                    @post.AuthorName[0]
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-bold text-slate-900">@post.AuthorName</span>
+                                            <span class="text-slate-400 text-xs">@post.CreatedAt.ToString("HH:mm")</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-slate-700 leading-relaxed mb-4">@post.Content</p>
+                                    <div class="flex items-center gap-6">
+                                        <button class="flex items-center gap-2 text-slate-400 hover:text-rose-500 transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                                            <span class="text-xs">@post.LikeCount</span>
+                                        </button>
+                                        <button class="flex items-center gap-2 text-slate-400 hover:text-indigo-500 transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                            <span class="text-xs">@post.ReplyCount</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
